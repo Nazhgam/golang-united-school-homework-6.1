@@ -4,6 +4,11 @@ import (
 	"errors"
 )
 
+const (
+	cap    = "out of shapes capacity"
+	length = "out of shapes length"
+)
+
 // box contains list of shapes and able to perform operations on them
 type box struct {
 	shapes         []Shape
@@ -21,7 +26,7 @@ func NewBox(shapesCapacity int) *box {
 // returns the error in case it goes out of the shapesCapacity range.
 func (b *box) AddShape(shape Shape) error {
 	if len(b.shapes) == b.shapesCapacity {
-		return errors.New("out of shapes capacity")
+		return errors.New(cap)
 	}
 	b.shapes = append(b.shapes, shape)
 	return nil
@@ -31,10 +36,10 @@ func (b *box) AddShape(shape Shape) error {
 // whether shape by index doesn't exist or index went out of the range, then it returns an error
 func (b *box) GetByIndex(i int) (Shape, error) {
 	if i >= len(b.shapes) {
-		return nil, errors.New("out of shapes length")
+		return nil, errors.New(length)
 	}
 	if i > b.shapesCapacity {
-		return nil, errors.New("out of shapes capacity")
+		return nil, errors.New(cap)
 	}
 	return b.shapes[i], nil
 }
@@ -43,10 +48,10 @@ func (b *box) GetByIndex(i int) (Shape, error) {
 // whether shape by index doesn't exist or index went out of the range, then it returns an error
 func (b *box) ExtractByIndex(i int) (Shape, error) {
 	if i >= len(b.shapes) {
-		return nil, errors.New("out of shapes length")
+		return nil, errors.New(length)
 	}
 	if i > b.shapesCapacity {
-		return nil, errors.New("out of shapes capacity")
+		return nil, errors.New(cap)
 	}
 
 	var res = b.shapes[i]
@@ -66,10 +71,10 @@ func (b *box) ExtractByIndex(i int) (Shape, error) {
 // whether shape by index doesn't exist or index went out of the range, then it returns an error
 func (b *box) ReplaceByIndex(i int, shape Shape) (Shape, error) {
 	if i >= len(b.shapes) {
-		return nil, errors.New("out of shapes length")
+		return nil, errors.New(length)
 	}
 	if i > b.shapesCapacity {
-		return nil, errors.New("out of shapes capacity")
+		return nil, errors.New(cap)
 	}
 
 	var res = b.shapes[i]
@@ -107,8 +112,9 @@ func (b *box) SumArea() float64 {
 // RemoveAllCircles removes all circles in the list
 // whether circles are not exist in the list, then returns an error
 func (b *box) RemoveAllCircles() error {
-	newShapesWithoutCircle := []Shape{}
+	newShapesWithoutCircle := make([]Shape, 0, len(b.shapes))
 	counterOfCircle := 0
+
 	for i := 0; i < len(b.shapes); i++ {
 		switch b.shapes[i].(type) {
 		case Circle:
@@ -117,8 +123,11 @@ func (b *box) RemoveAllCircles() error {
 			newShapesWithoutCircle = append(newShapesWithoutCircle, b.shapes[i])
 		}
 	}
+
 	if counterOfCircle == 0 {
 		return errors.New("no circle in list")
 	}
+
+	b.shapes = newShapesWithoutCircle
 	return nil
 }
