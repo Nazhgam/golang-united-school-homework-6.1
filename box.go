@@ -78,15 +78,8 @@ func (b *box) ReplaceByIndex(i int, shape Shape) (Shape, error) {
 	}
 
 	var res = b.shapes[i]
-	// newShape := b.shapes[:i]
+	b.shapes[i] = shape
 
-	// if i == len(b.shapes)-1 {
-	// 	b.shapes = newShape
-	// 	return res, nil
-	// }
-
-	// newShape = append(newShape, b.shapes[i+1:]...)
-	// b.shapes = newShape
 	return res, nil
 }
 
@@ -115,7 +108,7 @@ func (b *box) RemoveAllCircles() error {
 	newShapesWithoutCircle := make([]Shape, 0, len(b.shapes))
 
 	for i := 0; i < len(b.shapes); i++ {
-		data, ok := b.shapes[i].(Circle)
+		data, ok := b.shapes[i].(*Circle)
 		if ok {
 			newShapesWithoutCircle = append(newShapesWithoutCircle, data)
 		}
