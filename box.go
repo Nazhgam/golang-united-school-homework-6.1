@@ -109,12 +109,12 @@ func (b *box) RemoveAllCircles() error {
 
 	for i := 0; i < len(b.shapes); i++ {
 		data, ok := b.shapes[i].(*Circle)
-		if ok {
+		if !ok {
 			newShapesWithoutCircle = append(newShapesWithoutCircle, data)
 		}
 	}
 
-	if len(newShapesWithoutCircle) == 0 {
+	if len(newShapesWithoutCircle) == len(b.shapes) {
 		return errors.New("no circle in list")
 	}
 
