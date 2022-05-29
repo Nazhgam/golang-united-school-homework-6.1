@@ -78,15 +78,15 @@ func (b *box) ReplaceByIndex(i int, shape Shape) (Shape, error) {
 	}
 
 	var res = b.shapes[i]
-	newShape := b.shapes[:i]
+	// newShape := b.shapes[:i]
 
-	if i == len(b.shapes)-1 {
-		b.shapes = newShape
-		return res, nil
-	}
+	// if i == len(b.shapes)-1 {
+	// 	b.shapes = newShape
+	// 	return res, nil
+	// }
 
-	newShape = append(newShape, b.shapes[i+1:]...)
-	b.shapes = newShape
+	// newShape = append(newShape, b.shapes[i+1:]...)
+	// b.shapes = newShape
 	return res, nil
 }
 
